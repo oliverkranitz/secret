@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Be My Valentine?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe6e6;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cat-img {
+            width: 200px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: clamp(1.5rem, 8vw, 2.5rem);
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            min-height: 60px;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #ffffff; color: #ff4d6d; position: relative; }
+
+        /* Floating Hearts */
+        .balloon {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 5s linear forwards;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-20vh); opacity: 0; }
+        }
+
+        #message {
+            display: none;
+        }
+
+        .bottom-img {
+            width: 180px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz" class="container">
+        <img src="1.jpg" alt="Cat 1" class="cat-img">
+        <h1>Will you be my Valentine?</h1>
+        <div class="btn-wrapper">
+            <button id="yesBtn" onclick="showLove()">Yes</button>
+            <button id="noBtn" onclick="moveNoButton(event)">No</button>
+        </div>
+    </div>
+
+    <div id="message" class="container">
+        <img src="2.jpg" alt="Cat 2" class="cat-img">
+        <h1>I know u love me behehe ❤️😛</h1>
+        <img src="3.jpg" alt="Cat 3" class="bottom-img">
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const quiz = document.getElementById('quiz');
+        const message = document.getElementById('message');
+
+        function moveNoButton(e) {
+            e.preventDefault();
+            noBtn.style.position = 'fixed';
+            
+            const padding = 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function showLove() {
+            quiz.style.display = 'none';
+            message.style.display = 'flex';
+            for(let i=0; i<40; i++) {
+                setTimeout(createBalloon, i * 80);
+            }
+        }
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.innerHTML = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random() * 4)];
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 95 + 'vw';
+            const duration = Math.random() * 2 + 3;
+            balloon.style.animationDuration = duration + 's';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), duration * 1000);
+        }
+
+        setInterval(createBalloon, 800);
+    </script>
+</body>
+</html>
